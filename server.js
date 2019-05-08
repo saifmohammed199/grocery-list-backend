@@ -11,6 +11,13 @@ const connectClient = async ()=> {
 
 }
 connectClient();
+server.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+  next();
+}); 
+server.use(bodyParser.json()); // for parsing application/json
 server.get('/api/list',async (req,res)=>{
 res.header("Access-Control-Allow-Origin","*");
 const dres = await client.query('SELECT *from grocery_items')
@@ -19,7 +26,7 @@ console.log(dres.rows)
 res.send(dres.rows);
 res.end();
 })
-server.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
 
 server.post('/api/list',async (req, res) =>{
 
